@@ -1,4 +1,6 @@
-﻿Function Add-TrackITWorkOrderCustomProperties {
+﻿#Requires -modules TrackITWebAPIPowerShell
+
+Function Add-TrackITWorkOrderCustomProperties {
     param(
         [Parameter(ValueFromPipeline)]$WorkOrder
     )
@@ -13,6 +15,7 @@ Function Get-TervisTrackITWorkOrder {
     param(
         $WorkOrderNumber
     )
+    Import-module TrackItWebAPIPowerShell -Force #Something is broken as this line shouldn't be required but it is
     Invoke-TrackITLogin -Username helpdeskbot -Pwd helpdeskbot
     $WorkOrder = Get-TrackITWorkOrder -WorkOrderNumber $WorkOrderNumber | select -ExpandProperty Data
     $WorkOrder | Add-TrackITWorkOrderCustomProperties
