@@ -32,7 +32,7 @@ Function Add-TrackITWorkOrderCustomProperties {
 
 Function Get-TervisTrackITWorkOrder {
     param(
-        $WorkOrderNumber
+        [Parameter(Mandatory)]$WorkOrderNumber
     )
     Import-module TrackItWebAPIPowerShell -Force #Something is broken as this line shouldn't be required but it is
     Invoke-TrackITLogin -Username helpdeskbot -Pwd helpdeskbot
