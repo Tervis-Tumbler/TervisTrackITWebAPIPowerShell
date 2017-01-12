@@ -39,3 +39,39 @@ Function Get-TervisTrackITWorkOrder {
     $WorkOrder = Get-TrackITWorkOrder -WorkOrderNumber $WorkOrderNumber | select -ExpandProperty Data
     $WorkOrder | Add-TrackITWorkOrderCustomProperties
 }
+
+Function Edit-TervisTrackITWorkOrder {
+    param (
+        [Parameter(Mandatory)]$WorkOrderNumber,
+        $KanbanizeColumn,
+        $KanbanizeLane,
+        $KanbanizeBoard,
+        $KanbanizeCardID,
+        $KanbanizeProject
+    )
+    
+    $TrackITWorkOrderPropertyMapping = @{
+        #UdfLookup1 = "KanbanizeProject"
+        #UdfLookup2 = "KanbanizeBoard"
+        #UdfLookup3 = "KanbanizeLane"
+        #UdfLookup4 = "KanbanizeColumn"
+        #UdfText2 = "KanbanizeCardID"
+        KanbanizeProject = "UdfLookup1"
+        KanbanizeBoard = "UdfLookup2"
+        KanbanizeLane = "UdfLookup3"
+        KanbanizeColumn = "UdfLookup4"
+        KanbanizeCardID = "UdfText2"
+    }
+
+    $Parameters = @{}
+    
+    foreach ($Key in $PSBoundParameters.Keys) {
+        if ($TrackITWorkOrderPropertyMapping.ContainsKey($Key)) {
+            $Parameters.Add($TrackITWorkOrderPropertyMapping[$Key], $PSBoundParameters[$Key])
+        } else {
+            $Parameters.Add($Key, $PSBoundParameters[$Key])
+        }
+    }
+
+    Edit-TrackITWorkOrder @Parameters
+}
